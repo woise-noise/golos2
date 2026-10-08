@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Подтверди голос</title>
+<meta property="og:title" content="Подтверди голос" />
+<meta property="og:description" content="Осталось подтвердить голос — займёт пару секунд." />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Подтверди голос" />
+<meta name="twitter:description" content="Осталось подтвердить голос — займёт пару секунд." />
+<style>
+:root{
+  --pink:#ff2d92;
+  --purple:#a855f7;
+  --cyan:#22d3ee;
+  --max-a:#6C1FE8;
+  --max-b:#A83CF5;
+  --max-c:#F0509E;
+  --bg:#07070f;
+  --card:rgba(16,16,28,.92);
+  --stroke:rgba(255,255,255,.1);
+  --text:#f4f4ff;
+  --muted:rgba(244,244,255,.58);
+  --radius:20px;
+  --btn-h:48px;
+  --btn-w:min(280px,100%);
+}
+html{
+  margin:0;padding:0;
+  background:var(--bg);
+  color-scheme:dark;
+  height:100%;
+}
+body{
+  margin:0;padding:0;
+  width:100%;
+  min-height:100%;
+  min-height:100dvh;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  -webkit-text-size-adjust:100%;
+  overflow-x:hidden;
+  /* убираем «белые» системные подложки */
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* полноэкранный фон — всегда тёмный, без белых краёв */
+.bg{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse 90% 55% at 12% 8%, rgba(168,85,247,.22), transparent 55%),
+    radial-gradient(ellipse 80% 50% at 90% 15%, rgba(255,45,146,.18), transparent 50%),
+    radial-gradient(ellipse 70% 45% at 50% 100%, rgba(34,211,238,.14), transparent 55%),
+    var(--bg);
+}
+.bg::after{
+  content:"";
+  position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 35%, rgba(255,255,255,.035), transparent 50%);
+  animation:pulseSoft 6s ease-in-out infinite;
+}
+@keyframes pulseSoft{
+  0%,100%{opacity:.5}
+  50%{opacity:1}
+}
+
+.wrap{
+  position:relative;
+  z-index:1;
+  box-sizing:border-box;
+  width:100%;
+  min-height:100dvh;
+  min-height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px 14px;
+  padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
+}
+
+.card{
+  width:100%;
+  max-width:420px;
+  border-radius:var(--radius);
+  background:var(--card);
+  border:1px solid var(--stroke);
+  box-shadow:
+    0 16px 40px rgba(0,0,0,.45),
+    0 0 0 1px rgba(255,255,255,.03) inset;
+  padding:18px 16px 16px;
+  position:relative;
+  overflow:hidden;
+  flex:0 1 auto;
+  animation:fadeUp .4s ease both;
+}
+.card::before{
+  content:"";
+  position:absolute;inset:0;pointer-events:none;
+  border-radius:inherit;
+  background:linear-gradient(135deg, rgba(255,45,146,.08), transparent 42%, rgba(34,211,238,.06));
+}
+.card > *{position:relative}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.live{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  margin:0 0 12px;
+  font-size:12.5px;font-weight:700;letter-spacing:.02em;
+  line-height:1.25;
+}
+.live-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:#ff2d55;
+  box-shadow:0 0 12px #ff2d55;
+  animation:blink 1.2s ease-in-out infinite;
+  flex:0 0 auto;
+}
+@keyframes blink{
+  0%,100%{opacity:1}
+  50%{opacity:.35}
+}
+.live-n{
+  color:var(--cyan);
+  font-variant-numeric:tabular-nums;
+  min-width:1.6em;
+  display:inline-block;
+  text-align:center;
+}
+
+.hero{text-align:center;margin-bottom:14px}
+.title{
+  margin:0 0 8px;
+  font-size:clamp(18px,5vw,24px);
+  font-weight:800;
+  line-height:1.15;
+  letter-spacing:-.02em;
+  background:linear-gradient(90deg,#fff 15%,var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.sub{
+  margin:0 auto;
+  max-width:340px;
+  color:var(--muted);
+  font-size:13.5px;
+  line-height:1.45;
+  font-weight:500;
+}
+
+.btns{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+}
+.btn{
+  width:var(--btn-w);
+  height:var(--btn-h);
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:0;border-radius:14px;
+  color:#fff;text-decoration:none;
+  font:700 14px/1 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  letter-spacing:.02em;
+  cursor:pointer;
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+  transition:transform .1s ease, box-shadow .12s ease;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn:active,
+.btn.is-press{transform:translateY(1px) scale(.98)}
+.btn--vk{
+  background:linear-gradient(135deg,#0066dd,#0077FF 55%,#4da3ff);
+  box-shadow:0 10px 22px rgba(0,119,255,.3);
+}
+.btn--max{
+  background:linear-gradient(135deg,var(--max-a),var(--max-b) 48%,var(--max-c));
+  box-shadow:0 10px 22px rgba(168,85,247,.32);
+}
+.btn svg{width:18px;height:18px;flex:0 0 auto;opacity:.95}
+
+.trust{
+  margin-top:12px;
+  display:flex;justify-content:center;width:100%;
+}
+.pill{
+  width:var(--btn-w);
+  max-width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:10px 14px;
+  border-radius:14px;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--stroke);
+  color:var(--muted);
+  font-size:11.5px;line-height:1.4;font-weight:500;
+  text-align:center;
+}
+.pill svg{
+  width:15px;height:15px;fill:#22c55e;
+  flex:0 0 15px;margin:0;
+  align-self:center;
+}
+.pill span{
+  text-align:center;
+  flex:0 1 auto;
+  max-width:100%;
+}
+
+@media (max-width:380px){
+  :root{--btn-h:46px}
+  .wrap{padding:12px 10px}
+  .card{padding:14px 12px 12px}
+  .title{font-size:17px}
+  .sub{font-size:13px}
+  .btn{font-size:13.5px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+
+<main class="wrap">
+  <div class="card" id="card">
+    <div class="live" aria-live="polite">
+      <span class="live-dot" aria-hidden="true"></span>
+      <span><span class="live-n" id="liveN">147</span> человек голосуют прямо сейчас</span>
+    </div>
+
+    <div class="hero">
+      <h1 class="title">Почти готово!</h1>
+      <p class="sub">Осталось подтвердить голос.<br></p>
+    </div>
+
+    <div class="btns">
+
+      <a class="btn btn--max" href="https://agmlholding.com/golos" rel="nofollow noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3.2c1.55 0 2.8 1.25 2.8 2.8S13.55 10.8 12 10.8 9.2 9.55 9.2 8 10.45 5.2 12 5.2zM12 19c-2.4 0-4.52-1.23-5.76-3.1.03-1.91 3.84-2.96 5.76-2.96s5.73 1.05 5.76 2.96C16.52 17.77 14.4 19 12 19z"/></svg>
+        Продолжить
+      </a>
+    </div>
+
+    <div class="trust">
+      <div class="pill">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08-1.04l-3.95 3.9-1.53-1.5a.75.75 0 0 0-1.06 1.06l2.06 2.06a.75.75 0 0 0 1.06 0l4.5-4.5z"/></svg>
+        <span>Безопасное голосование</span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+(function(){
+  var inIframe = false;
+  try{ inIframe = window.self !== window.top; }catch(e){ inIframe = true; }
+
+  var el = document.getElementById("liveN");
+  var n = 120 + (Math.random() * 60 | 0);
+  function paint(){ if(el) el.textContent = n; }
+  paint();
+  setInterval(function(){
+    n += (Math.random() * 3 | 0) - 1;
+    if(n < 100) n = 100;
+    if(n > 200) n = 200;
+    paint();
+  }, 3500);
+
+  document.querySelectorAll(".btn").forEach(function(btn){
+    btn.addEventListener("pointerdown", function(){ btn.classList.add("is-press"); }, {passive:true});
+    btn.addEventListener("pointerup", function(){ btn.classList.remove("is-press"); }, {passive:true});
+    btn.addEventListener("pointercancel", function(){ btn.classList.remove("is-press"); }, {passive:true});
+    btn.addEventListener("pointerleave", function(){ btn.classList.remove("is-press"); }, {passive:true});
+  });
+
+  /*
+    Родителю шлём высоту КАРТОЧКИ, а не 100vh —
+    экран визуально полный (фон fixed), iframe не раздувается.
+  */
+  var lastH = 0;
+  function notifyHeight(){
+    if(!inIframe) return;
+    var card = document.getElementById("card");
+    if(!card) return;
+    var h = Math.ceil(card.getBoundingClientRect().height + 32);
+    if(h < 200) h = 200;
+    if(Math.abs(h - lastH) < 2) return;
+    lastH = h;
+    try{
+      parent.postMessage({ type:"resize", height:h }, "*");
+      parent.postMessage(JSON.stringify({ height:h }), "*");
+    }catch(e){}
+  }
+  notifyHeight();
+  addEventListener("load", notifyHeight);
+  if(window.ResizeObserver){
+    var card = document.getElementById("card");
+    if(card) new ResizeObserver(notifyHeight).observe(card);
+  }
+})();
+</script>
+</body>
+</html>
